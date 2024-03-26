@@ -1,12 +1,12 @@
 import {getPictures} from './data.js';
-import {drawPictures} from './pictures.js';
+import {renderPictures} from './pictures.js';
 import {showFullPicture} from './full-image.js';
 
 const pictures = getPictures();
 
 const gallery = function() {
 
-  drawPictures(pictures);
+  renderPictures(pictures);
 
   const pictureData = pictures[0];
   showFullPicture(pictureData);

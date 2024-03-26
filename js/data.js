@@ -32,26 +32,14 @@ const descriptions = [
   'Норм',
 ];
 
-function getRandomArrayElement(array) {
-  return array[getRandomPositiveInteger(0, array.length - 1)];
-}
+const getRandomArrayElement = (array) =>
+  array[getRandomPositiveInteger(0, array.length - 1)];
 
-function generateComments() {
+
+const generateComments = () => {
   const comments = [];
 
-  for (let index = 0; index < getRandomPositiveInteger(1, 6); index++) {
-    const id = index + 1;
-    const comment = {
-      id,
-      avatar: `img/avatar-${id}.svg`,
-      message: generateCommentMessage(),
-      name: getRandomArrayElement(commentNames),
-    };
-
-    comments.push(comment);
-  }
-
-  function generateCommentMessage() {
+  const generateCommentMessage = () => {
     const messages = [];
 
     for (let index = 0; index < getRandomPositiveInteger(1, 2); index++) {
@@ -65,21 +53,33 @@ function generateComments() {
     }
 
     return messages.join(' ');
+  };
+
+  for (let index = 0; index < getRandomPositiveInteger(6, 16); index++) {
+    const id = index + 1;
+    const comment = {
+      id,
+      avatar: `img/avatar-${getRandomPositiveInteger(1, 6)}.svg`,
+      message: generateCommentMessage(),
+      name: getRandomArrayElement(commentNames),
+    };
+
+    comments.push(comment);
   }
 
   return comments;
-}
+};
 
-function createPicture(id) {
-  return {
+const createPicture = (id) =>
+  ({
     id,
     url: `photos/${id}.jpg`,
     description: getRandomArrayElement(descriptions),
     likes: getRandomPositiveInteger(15, 200),
 
     comments: generateComments(),
-  };
-}
+  });
+
 
 const getPictures = () =>
   Array.from({ length: 25 }, (_, pictureIndex) =>

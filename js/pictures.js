@@ -4,7 +4,7 @@ const template = templateFragment.querySelector('a');
 const picturesListElement = document.querySelector('.pictures');
 const picturesListFragment = document.createDocumentFragment();
 
-const drawPictures = function(picturesData) {
+const renderPictures = function(picturesData) {
   picturesData.forEach(({url, likes, comments}) => {
     const pictureEl = template.cloneNode(true);
 
@@ -19,5 +19,5 @@ const drawPictures = function(picturesData) {
 };
 
 
-export {drawPictures};
+export {renderPictures};
 

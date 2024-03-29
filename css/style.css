@@ -531,6 +531,7 @@ main {
   position: absolute;
   bottom: 10px;
   left: 50%;
+  padding: 0;
 
   width: 495px;
   height: 33px;
@@ -541,17 +542,50 @@ main {
   color: #ffffff;
   white-space: nowrap;
 
-  background-color: rgba(0, 0, 0, 0.6);
-  border-radius: 33px;
+  background: none;
+  border: none;
 
   -webkit-transform: translateX(-50%);
-      -ms-transform: translateX(-50%);
-          transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
 }
+
+.effect-level .noUi-connect {
+  border-radius: 0px;
+  background: #7e7d7d;
+}
+.effect-level .noUi-target {
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 0px;
+  border: none;
+  box-shadow: none;
+}
+.effect-level .noUi-horizontal .noUi-handle  {
+  top: 0;
+  bottom: 0;
+  height: 33px;
+  border-radius: 0px;
+  cursor: pointer;
+}
+.effect-level .noUi-horizontal .noUi-handle::before,
+.effect-level .noUi-horizontal .noUi-handle::after {
+  height: 17px;
+  width: 2px;
+  top: 7px;
+}
+.effect-level .noUi-horizontal .noUi-handle::before {
+  left: 13px
+}
+.effect-level .noUi-horizontal .noUi-handle::after {
+  left: 18px
+}
+
 
 .effect-level__value {
   display: none;
 }
+
 
 
 /**
@@ -1403,3 +1437,6 @@ main {
 .hidden {
   display: none;
 }
+
+
+

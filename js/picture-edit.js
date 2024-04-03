@@ -12,10 +12,12 @@ const sliderValueElement = document.querySelector('.effect-level__value');
 const cutPercentChar = (str) =>
   str.slice(0, str.length - 1);
 
-const setPictureStyles = () => {
-
+const setPictureStyles = throttle(() => {
   const effect = document.querySelector('.effects__list input[type="radio"]:checked').value;
   const effectValue = sliderValueElement.value;
+
+  document.querySelector('.img-upload__effect-level').classList.toggle('hidden', effect === 'none');
+
 
   const scale = Number(parseFloat(inputPictureScale.value)) / 100;
   picture.style.transform = `scale(${scale})`;
@@ -48,11 +50,9 @@ const setPictureStyles = () => {
   }
 
   picture.style.filter = filter;
-};
+}, 50);
 
-const setPictureStylesThrotled = throttle(setPictureStyles, 50);
-setPictureStylesThrotled();
-
+// setPictureStyles();
 
 buttonPictureScaleMinus.addEventListener('click', () => {
   let currentValue = Number(cutPercentChar(inputPictureScale.value));
@@ -89,7 +89,7 @@ inputPictureScale.addEventListener('change', (evt) => {
     inputPictureScale.value = `${currentValue}%`;
   }
 
-  setPictureStylesThrotled();
+  setPictureStyles();
 });
 
 
@@ -116,13 +116,11 @@ noUiSlider.create(sliderElement, {
 
 sliderElement.noUiSlider.on('update', () => {
   sliderValueElement.value = sliderElement.noUiSlider.get();
-  setPictureStylesThrotled();
+  setPictureStyles();
 });
 
 
 const updateSlider = (effect) => {
-  document.querySelector('.img-upload__effect-level').classList.toggle('hidden', effect === 'none');
-
   switch (effect) {
     case 'none':
       break;
@@ -167,7 +165,7 @@ const updateSlider = (effect) => {
 const onEffectChange = (evt) => {
   const currentEffect = evt.target.value;
   updateSlider(currentEffect);
-  setPictureStylesThrotled();
+  setPictureStyles();
 
   document.querySelectorAll('.effects__list input[type="radio"]').forEach((input) => {
     const effect = input.value;
@@ -180,3 +178,6 @@ const onEffectChange = (evt) => {
 document.querySelector('.effects__list').addEventListener('change', (evt) => {
   onEffectChange(evt);
 });
+
+
+export { setPictureStyles };

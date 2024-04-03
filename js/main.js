@@ -1,10 +1,22 @@
-import {getRandomPositiveInteger, checkStringLength} from './util.js';
-import {gallery} from './gallery.js';
-import './form.js';
+import { showAlert } from './util.js';
+import { renderPictures } from './pictures.js';
+import { getData } from './api.js';
+import { setPictureFormSubmit, closeUploadModal } from './form.js';
 import './picture-edit.js';
 
 
-getRandomPositiveInteger(1, 10);
-checkStringLength('Some text!', 10);
+getData(
+  (pictures) => {
+    renderPictures(pictures);
+  },
+  () => {
+    showAlert('Не удалось загрузить данныйе');
+  }
+);
 
-gallery();
+
+setPictureFormSubmit(() => {
+
+
+  // console.log()
+});

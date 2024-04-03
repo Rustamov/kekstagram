@@ -1,27 +1,31 @@
 import { isEscapeKey, isEnterKey } from './util.js';
+import { setPictureStyles } from './picture-edit.js';
+import { sendData } from './api.js';
 
 const uploadInput = document.querySelector('#upload-file');
 const uploadModal = document.querySelector('.img-upload__overlay');
 const buttonCloseUploadModal = document.querySelector('.img-upload__cancel');
 
 const form = document.querySelector('.img-upload__form');
+const submitButton = document.querySelector('.img-upload__submit');
 const inputHashtags = form.querySelector('.text__hashtags');
 const inputDescription = form.querySelector('.text__description');
 
 const showUploadModal = () => {
+  setPictureStyles();
+
   uploadModal.classList.remove('hidden');
   document.body.classList.add('modal-open');
 
   document.addEventListener('keydown', onPopupEscKeydown);
 };
 
-showUploadModal();
-
 const closeUploadModal = () => {
   uploadModal.classList.add('hidden');
   document.body.classList.remove('modal-open');
 
   form.reset();
+  pristine.reset();
   document.removeEventListener('keydown', onPopupEscKeydown);
 };
 
@@ -55,15 +59,6 @@ inputDescription.addEventListener('keydown', (evt) => {
 
 
 // Validation
-// const pristine = new Pristine(form, {
-//   classTo: 'img-upload__element',
-//   errorClass: 'img-upload__item--invalid',
-//   successClass: 'img-upload__item--valid',
-//   errorTextParent: 'img-upload__element',
-//   errorTextTag: 'span',
-//   errorTextClass: 'img-upload__error',
-// });
-
 const pristine = new Pristine(form, {
   classTo: 'img-upload__element',
   errorTextParent: 'img-upload__element',
@@ -94,11 +89,118 @@ pristine.addValidator(
   'Неправильно заполнены хэштеги'
 );
 
-form.addEventListener('submit', (evt) => {
-  const isValid = pristine.validate();
 
-  if (!isValid) {
-    evt.preventDefault();
+function onLoadSuccessEscKeydown(evt) {
+  if (isEscapeKey(evt)) {
+    closeLoadSuccessMsg();
   }
-});
+}
+
+const showLoadSuccessMsg = () => {
+  const messageTemplateFragment = document.querySelector('#success').content;
+  const messageTemplate = messageTemplateFragment.querySelector('.success');
+
+  const messageEl = messageTemplate.cloneNode(true);
+
+  document.body.appendChild(messageEl);
+  document.body.classList.add('modal-open');
+
+  messageEl.querySelector('.success__inner').addEventListener('click', (evt) => {
+    evt.stopPropagation();
+  });
+  messageEl.addEventListener('click', () => {
+    closeLoadSuccessMsg();
+  });
+  messageEl.querySelector('.success__button').addEventListener('click', () => {
+    closeLoadSuccessMsg();
+  });
+
+  document.addEventListener('keydown', onLoadSuccessEscKeydown);
+};
+
+const closeLoadSuccessMsg = () => {
+  if (document.querySelector('.success')) {
+    document.querySelector('.success').remove();
+    document.body.classList.remove('modal-open');
+
+    document.removeEventListener('keydown', onLoadSuccessEscKeydown);
+  }
+};
+
+
+function onLoadErrorEscKeydown(evt) {
+  if (isEscapeKey(evt)) {
+    closeLoadErrorMsg();
+  }
+}
+
+const showLoadErrorMsg = () => {
+  const messageTemplateFragment = document.querySelector('#error').content;
+  const messageTemplate = messageTemplateFragment.querySelector('.error');
+
+  const messageEl = messageTemplate.cloneNode(true);
+
+  document.body.appendChild(messageEl);
+  document.body.classList.add('modal-open');
+
+  messageEl.querySelector('.error__inner').addEventListener('click', (evt) => {
+    evt.stopPropagation();
+  });
+  messageEl.addEventListener('click', () => {
+    closeLoadErrorMsg();
+  });
+  messageEl.querySelector('.error__button').addEventListener('click', () => {
+    closeLoadErrorMsg();
+  });
+
+  document.addEventListener('keydown', onLoadErrorEscKeydown);
+};
+
+const closeLoadErrorMsg = () => {
+  if (document.querySelector('.error')) {
+    document.querySelector('.error').remove();
+    document.body.classList.remove('modal-open');
+
+    document.removeEventListener('keydown', onLoadErrorEscKeydown);
+  }
+};
+
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = 'Публикую...';
+};
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = 'Опубликовать';
+};
+
+const setPictureFormSubmit = (onSuccess) => {
+  form.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    const isValid = pristine.validate();
+    if (isValid) {
+      blockSubmitButton();
+      sendData(
+        () => {
+          onSuccess();
+          showLoadSuccessMsg();
+          unblockSubmitButton();
+          closeUploadModal();
+        },
+        () => {
+          showLoadErrorMsg();
+          unblockSubmitButton();
+          closeUploadModal();
+        },
+        new FormData(evt.target),
+      );
+    } else {
+      showAlert('Заполните форму!');
+    }
+  });
+};
+
+export { setPictureFormSubmit, closeUploadModal };
 

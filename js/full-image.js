@@ -3,7 +3,7 @@ const closeButton = bigPicture.querySelector('.big-picture__cancel');
 const loadCommentsButton = bigPicture.querySelector('.social__comments-loader');
 
 const commentTemplateFragment = document.querySelector('#social-comment').content;
-const commentЕemplate = commentTemplateFragment.querySelector('.social__comment');
+const commentTemplate = commentTemplateFragment.querySelector('.social__comment');
 
 const commentsListElement = document.querySelector('.social__comments');
 
@@ -15,8 +15,8 @@ const showedComments = [];
 const getSocialСomments = (comments) => {
   const commentsListFragment = document.createDocumentFragment();
 
-  comments.forEach(({avatar, message, name}) => {
-    const commentEl = commentЕemplate.cloneNode(true);
+  comments.forEach(({ avatar, message, name }) => {
+    const commentEl = commentTemplate.cloneNode(true);
 
     commentEl.querySelector('.social__picture').setAttribute('src', avatar);
     commentEl.querySelector('.social__picture').setAttribute('alt', name);
@@ -33,6 +33,7 @@ const closePopup = () => {
     bigPicture.classList.add('hidden');
     document.body.classList.remove('modal-open');
 
+    document.removeEventListener('keydown', onPopupEscKeydown);
   }
 };
 
@@ -62,6 +63,12 @@ window.addEventListener('keydown', (evt) => {
   }
 });
 
+function onPopupEscKeydown(evt) {
+  if (isEscapeKey(evt)) {
+    closePopup();
+  }
+}
+
 loadCommentsButton.addEventListener('click', () => {
 
   loadComments();
@@ -90,6 +97,10 @@ const showFullPicture = function (picture) {
   // commentsListElement.appendChild(getSocialСomments(showedComments));
 
   loadComments();
+
+  document.addEventListener('keydown', onPopupEscKeydown);
 };
 
 export { showFullPicture };
+
+

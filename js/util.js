@@ -28,7 +28,6 @@ const makeCounter = () => {
 };
 
 const throttle = (func, ms) => {
-
   let isThrottled = false,
     savedArgs,
     savedThis;
@@ -55,6 +54,19 @@ const throttle = (func, ms) => {
 
   return wrapper;
 };
+
+// function throttle(func, timeFrame) {
+//   var lastTime = 0;
+//   return function (...args) {
+//     var now = new Date();
+//     console.log();
+//     if (now - lastTime >= timeFrame) {
+//       func(...args);
+//       lastTime = now;
+//     }
+//   };
+// }
+
 
 
 const showAlert = (message) => {

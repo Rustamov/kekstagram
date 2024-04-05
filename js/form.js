@@ -20,6 +20,8 @@ const showUploadModal = () => {
   document.addEventListener('keydown', onPopupEscKeydown);
 };
 
+showUploadModal();
+
 const closeUploadModal = () => {
   uploadModal.classList.add('hidden');
   document.body.classList.remove('modal-open');

@@ -18,7 +18,6 @@ const setPictureStyles = throttle(() => {
 
   document.querySelector('.img-upload__effect-level').classList.toggle('hidden', effect === 'none');
 
-
   const scale = Number(parseFloat(inputPictureScale.value)) / 100;
   picture.style.transform = `scale(${scale})`;
 
@@ -51,8 +50,6 @@ const setPictureStyles = throttle(() => {
 
   picture.style.filter = filter;
 }, 50);
-
-// setPictureStyles();
 
 buttonPictureScaleMinus.addEventListener('click', () => {
   let currentValue = Number(cutPercentChar(inputPictureScale.value));
@@ -93,34 +90,49 @@ inputPictureScale.addEventListener('change', (evt) => {
 });
 
 
-noUiSlider.create(sliderElement, {
-  range: {
-    min: 0,
-    max: 100,
-  },
-  start: 100,
-  step: 1,
-  connect: 'lower',
-  format: {
-    to: function (value) {
-      if (Number.isInteger(value)) {
-        return value.toFixed(0);
-      }
-      return value.toFixed(1);
+
+function createSlider() {
+  noUiSlider.create(sliderElement, getSliderProps());
+
+  const effect = document.querySelector('.effects__list input[type="radio"]:checked').value;
+  updateSlider(effect);
+};
+createSlider();
+
+function getSliderProps(props) {
+  let result;
+  const defProps = {
+    range: {
+      min: 0,
+      max: 100,
     },
-    from: function (value) {
-      return parseFloat(value);
+    start: 100,
+    step: 1,
+    connect: 'lower',
+    format: {
+      to: function (value) {
+        if (Number.isInteger(value)) {
+          return value.toFixed(0);
+        }
+        return value.toFixed(1);
+      },
+      from: function (value) {
+        return parseFloat(value);
+      },
     },
-  },
-});
+  };
+
+  result = {...defProps, ...props};
+
+  return result;
+}
 
 sliderElement.noUiSlider.on('update', () => {
   sliderValueElement.value = sliderElement.noUiSlider.get();
   setPictureStyles();
 });
 
-
-const updateSlider = (effect) => {
+function updateSlider(effect = 'none') {
   switch (effect) {
     case 'none':
       break;
@@ -175,9 +187,12 @@ const onEffectChange = (evt) => {
   });
 };
 
+
+
 document.querySelector('.effects__list').addEventListener('change', (evt) => {
   onEffectChange(evt);
 });
+
 
 
 export { setPictureStyles };

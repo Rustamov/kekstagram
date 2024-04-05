@@ -16,6 +16,8 @@ const setPictureStyles = throttle(() => {
   const effect = document.querySelector('.effects__list input[type="radio"]:checked').value;
   const effectValue = sliderValueElement.value;
 
+  console.log(effectValue);
+
   document.querySelector('.img-upload__effect-level').classList.toggle('hidden', effect === 'none');
 
   const scale = Number(parseFloat(inputPictureScale.value)) / 100;

@@ -48,7 +48,7 @@
                 <div class="img-upload__preview-container">
 
                   <!-- Изменение размера изображения -->
-                  <fieldset class="img-upload__scale  scale">
+                  <fieldset class="img-upload__scale  scale" hidden>
                     <button type="button" class="scale__control  scale__control--smaller">Уменьшить</button>
                     <input type="text" class="scale__control  scale__control--value" value="100%" title="Image Scale"
                       name="scale">
@@ -73,7 +73,7 @@
                 <!-- Наложение эффекта на изображение -->
                 <fieldset class="img-upload__effects  effects">
                   <ul class="effects__list">
-                    <li class="effects__item">
+                    <!-- <li class="effects__item">
                       <input type="radio" class="effects__radio  visually-hidden" name="effect" id="effect-none"
                         value="none" checked>
                       <label for="effect-none" class="effects__label">
@@ -112,10 +112,10 @@
                         <span class="effects__preview  effects__preview--phobos">Превью эффекта Фобос</span>
                         Фобос
                       </label>
-                    </li>
+                    </li> -->
                     <li class="effects__item">
                       <input type="radio" class="effects__radio  visually-hidden" name="effect" id="effect-heat"
-                        value="heat">
+                        value="heat" checked>
                       <label for="effect-heat" class="effects__label">
                         <span class="effects__preview  effects__preview--heat">Превью эффекта Зной</span>
                         Зной
@@ -125,7 +125,7 @@
                 </fieldset>
 
                 <!-- Добавление хэш-тегов и комментария к изображению -->
-                <fieldset class="img-upload__text text">
+                <fieldset class="img-upload__text text" hidden>
                   <div class="img-upload__element">
                     <input class="text__hashtags" name="hashtags" placeholder="#ХэшТег">
                   </div>
@@ -141,7 +141,7 @@
                 </fieldset>
 
                 <!-- Кнопка для отправки данных на сервер -->
-                <button type="submit" class="img-upload__submit" id="upload-submit">Опубликовать</button>
+                <button type="submit" class="img-upload__submit" id="upload-submit" hidden>Опубликовать</button>
               </div>
             </div>
           </form>

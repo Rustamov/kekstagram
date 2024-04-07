@@ -22,8 +22,4 @@ getData(
 );
 
 
-setPictureFormSubmit(() => {
-
-
-  // console.log()
-});
+setPictureFormSubmit(() => {});

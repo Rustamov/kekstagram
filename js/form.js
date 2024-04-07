@@ -5,11 +5,16 @@ import { sendData } from './api.js';
 const uploadInput = document.querySelector('#upload-file');
 const uploadModal = document.querySelector('.img-upload__overlay');
 const buttonCloseUploadModal = document.querySelector('.img-upload__cancel');
+const picture = document.querySelector('.img-upload__preview img');
+
 
 const form = document.querySelector('.img-upload__form');
 const submitButton = document.querySelector('.img-upload__submit');
 const inputHashtags = form.querySelector('.text__hashtags');
 const inputDescription = form.querySelector('.text__description');
+
+const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+
 
 // Validation
 const pristine = new Pristine(form, {
@@ -79,7 +84,18 @@ buttonCloseUploadModal.addEventListener('keydown', (evt) => {
 });
 
 uploadInput.addEventListener('change', () => {
-  showUploadModal();
+
+  const file = uploadInput.files[0];
+  const fileName = file.name.toLowerCase();
+
+  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+
+  if (matches) {
+    picture.src = URL.createObjectURL(file);
+    showUploadModal();
+  } else {
+    showAlert('Выберите подходящюю картинку');
+  }
 });
 
 inputHashtags.addEventListener('keydown', (evt) => {

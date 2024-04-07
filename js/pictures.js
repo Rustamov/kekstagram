@@ -2,9 +2,9 @@ import { getRandomElementsFromArray } from './util.js';
 import { getCurrentFilter, FILTERS } from './filter.js';
 
 const templateFragment = document.querySelector('#picture').content;
-const template = templateFragment.querySelector('a');
+const templateNode = templateFragment.querySelector('a');
 
-const picturesListElement = document.querySelector('.pictures');
+const picturesListNode = document.querySelector('.pictures');
 const picturesListFragment = document.createDocumentFragment();
 
 const SHOWED_RANDOM_PICTURES_COUNT = 10;
@@ -30,7 +30,7 @@ const renderPictures = function (picturesData) {
   }
 
   sortedPicrures.forEach(({ id, url, likes, comments }) => {
-    const pictureEl = template.cloneNode(true);
+    const pictureEl = templateNode.cloneNode(true);
 
     pictureEl.setAttribute('id', id);
     pictureEl.querySelector('.picture__img').setAttribute('src', url);
@@ -40,10 +40,10 @@ const renderPictures = function (picturesData) {
     picturesListFragment.appendChild(pictureEl);
   });
 
-  picturesListElement.querySelectorAll('.picture').forEach((pictureEl) => {
+  picturesListNode.querySelectorAll('.picture').forEach((pictureEl) => {
     pictureEl.remove();
   });
-  picturesListElement.appendChild(picturesListFragment);
+  picturesListNode.appendChild(picturesListFragment);
 };
 
 export { renderPictures };

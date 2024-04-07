@@ -103,18 +103,18 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
-const getClickedChildWithClass = (parent, clickedEl, childElementClass) => {
-  let needEl = clickedEl;
+const getClickedChildWithClass = (parent, clickedNode, childElementClass) => {
+  let needNode = clickedNode;
 
-  while (needEl !== parent && needEl.tagName !== 'BODY') {
-    if (needEl.classList.contains(childElementClass)) {
+  while (needNode !== parent && needNode.tagName !== 'BODY') {
+    if (needNode.classList.contains(childElementClass)) {
       break;
     }
 
-    needEl = needEl.parentElement;
+    needNode = needNode.parentElement;
   }
 
-  return needEl !== parent ? needEl : false;
+  return needNode !== parent ? needNode : false;
 };
 
 

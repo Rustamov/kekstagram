@@ -1,8 +1,8 @@
 import { getClickedChildWithClass } from './util.js';
 
-const filterEl = document.querySelector('.img-filters');
-const filterFormEL = filterEl.querySelector('.img-filters__form');
-const filterButtons = filterEl.querySelectorAll('.img-filters__button');
+const filterNode = document.querySelector('.img-filters');
+const filterFormNode = filterNode.querySelector('.img-filters__form');
+const filterButtons = filterNode.querySelectorAll('.img-filters__button');
 const buttonActiveClass = 'img-filters__button--active';
 
 const FILTERS = {
@@ -11,10 +11,10 @@ const FILTERS = {
   DISCUSSED: 'filter-discussed',
 };
 
-filterEl.classList.remove('img-filters--inactive');
+filterNode.classList.remove('img-filters--inactive');
 
 const getCurrentFilter = () => {
-  const filterId = filterEl.querySelector(`.${buttonActiveClass}`).getAttribute('id');
+  const filterId = filterNode.querySelector(`.${buttonActiveClass}`).getAttribute('id');
   const filterFindIndex = Object.values(FILTERS).indexOf(filterId);
 
   return (filterFindIndex !== -1) ? filterId : FILTERS.DEFAULT;
@@ -22,7 +22,7 @@ const getCurrentFilter = () => {
 
 const setFilterClick = (cb) => {
 
-  filterFormEL.addEventListener('click', (evt) => {
+  filterFormNode.addEventListener('click', (evt) => {
     const clickedButton = getClickedChildWithClass(evt.currentTarget, evt.target, 'img-filters__button');
     if (!clickedButton) {
       return;

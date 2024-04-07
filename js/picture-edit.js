@@ -1,12 +1,12 @@
 import { throttle } from './util.js';
 
-const picture = document.querySelector('.img-upload__preview img');
-const inputPictureScale = document.querySelector('.scale__control--value');
-const buttonPictureScaleMinus = document.querySelector('.scale__control--smaller');
-const buttonPictureScalePlus = document.querySelector('.scale__control--bigger');
+const pictureNode = document.querySelector('.img-upload__preview img');
+const inputPictureScaleNode = document.querySelector('.scale__control--value');
+const buttonPictureScaleMinusNode = document.querySelector('.scale__control--smaller');
+const buttonPictureScalePlusNode = document.querySelector('.scale__control--bigger');
 
-const sliderElement = document.querySelector('.effect-level__slider');
-const sliderValueElement = document.querySelector('.effect-level__value');
+const sliderNode = document.querySelector('.effect-level__slider');
+const sliderValueNode = document.querySelector('.effect-level__value');
 
 
 const cutPercentChar = (str) =>
@@ -14,12 +14,12 @@ const cutPercentChar = (str) =>
 
 const setPictureStyles = throttle(() => {
   const effect = document.querySelector('.effects__list input[type="radio"]:checked').value;
-  const effectValue = sliderValueElement.value;
+  const effectValue = sliderValueNode.value;
 
   document.querySelector('.img-upload__effect-level').classList.toggle('hidden', effect === 'none');
 
-  const scale = Number(parseFloat(inputPictureScale.value)) / 100;
-  picture.style.transform = `scale(${scale})`;
+  const scale = Number(parseFloat(inputPictureScaleNode.value)) / 100;
+  pictureNode.style.transform = `scale(${scale})`;
 
   let filter = '';
   switch (effect) {
@@ -48,42 +48,42 @@ const setPictureStyles = throttle(() => {
       break;
   }
 
-  picture.style.filter = filter;
+  pictureNode.style.filter = filter;
 }, 50);
 
-buttonPictureScaleMinus.addEventListener('click', () => {
-  let currentValue = Number(cutPercentChar(inputPictureScale.value));
+buttonPictureScaleMinusNode.addEventListener('click', () => {
+  let currentValue = Number(cutPercentChar(inputPictureScaleNode.value));
 
   if (currentValue > 25) {
     currentValue -= 25;
   }
 
-  inputPictureScale.value = `${currentValue}%`;
-  inputPictureScale.dispatchEvent(new Event('change', { 'bubbles': true }));
+  inputPictureScaleNode.value = `${currentValue}%`;
+  inputPictureScaleNode.dispatchEvent(new Event('change', { 'bubbles': true }));
 });
 
-buttonPictureScalePlus.addEventListener('click', () => {
-  let currentValue = Number(cutPercentChar(inputPictureScale.value));
+buttonPictureScalePlusNode.addEventListener('click', () => {
+  let currentValue = Number(cutPercentChar(inputPictureScaleNode.value));
 
   if (currentValue < 100) {
     currentValue += 25;
   }
 
-  inputPictureScale.value = `${currentValue}%`;
-  inputPictureScale.dispatchEvent(new Event('change', { 'bubbles': true }));
+  inputPictureScaleNode.value = `${currentValue}%`;
+  inputPictureScaleNode.dispatchEvent(new Event('change', { 'bubbles': true }));
 });
 
-inputPictureScale.addEventListener('change', (evt) => {
+inputPictureScaleNode.addEventListener('change', (evt) => {
   let currentValue = Number(cutPercentChar(evt.target.value));
 
   if (currentValue > 100) {
     currentValue = 100;
-    inputPictureScale.value = `${currentValue}%`;
+    inputPictureScaleNode.value = `${currentValue}%`;
 
   }
   if (currentValue < 25) {
     currentValue = 25;
-    inputPictureScale.value = `${currentValue}%`;
+    inputPictureScaleNode.value = `${currentValue}%`;
   }
 
   setPictureStyles();
@@ -91,7 +91,7 @@ inputPictureScale.addEventListener('change', (evt) => {
 
 
 function createSlider() {
-  noUiSlider.create(sliderElement, getSliderProps());
+  noUiSlider.create(sliderNode, getSliderProps());
 
   const effect = document.querySelector('.effects__list input[type="radio"]:checked').value;
   updateSlider(effect);
@@ -126,8 +126,8 @@ function getSliderProps(props) {
   return result;
 }
 
-sliderElement.noUiSlider.on('update', () => {
-  sliderValueElement.value = sliderElement.noUiSlider.get();
+sliderNode.noUiSlider.on('update', () => {
+  sliderValueNode.value = sliderNode.noUiSlider.get();
   setPictureStyles();
 });
 
@@ -138,37 +138,37 @@ function updateSlider(effect = 'none') {
 
     case 'chrome':
     case 'sepia':
-      sliderElement.noUiSlider.updateOptions({
+      sliderNode.noUiSlider.updateOptions({
         range: {
           min: 0,
           max: 1,
         },
         step: 0.1,
       });
-      sliderElement.noUiSlider.set(1);
+      sliderNode.noUiSlider.set(1);
       break;
 
     case 'marvin':
-      sliderElement.noUiSlider.updateOptions({
+      sliderNode.noUiSlider.updateOptions({
         range: {
           min: 0,
           max: 100,
         },
         step: 1,
       });
-      sliderElement.noUiSlider.set(100);
+      sliderNode.noUiSlider.set(100);
       break;
 
     case 'phobos':
     case 'heat':
-      sliderElement.noUiSlider.updateOptions({
+      sliderNode.noUiSlider.updateOptions({
         range: {
           min: 0,
           max: 3,
         },
         step: 0.1,
       });
-      sliderElement.noUiSlider.set(3);
+      sliderNode.noUiSlider.set(3);
       break;
   }
 }
@@ -182,7 +182,7 @@ const onEffectChange = (evt) => {
     const effect = input.value;
     const className = `effects__preview--${effect}`;
 
-    picture.classList.toggle(className, currentEffect === effect);
+    pictureNode.classList.toggle(className, currentEffect === effect);
   });
 };
 

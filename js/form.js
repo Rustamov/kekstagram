@@ -2,22 +2,22 @@ import { isEscapeKey, isEnterKey, showAlert } from './util.js';
 import { setPictureStyles } from './picture-edit.js';
 import { sendData } from './api.js';
 
-const uploadInput = document.querySelector('#upload-file');
+const uploadInputNode = document.querySelector('#upload-file');
 const uploadModal = document.querySelector('.img-upload__overlay');
-const buttonCloseUploadModal = document.querySelector('.img-upload__cancel');
-const picture = document.querySelector('.img-upload__preview img');
+const buttonCloseUploadModalNode = document.querySelector('.img-upload__cancel');
+const pictureNode = document.querySelector('.img-upload__preview img');
 
 
-const form = document.querySelector('.img-upload__form');
-const submitButton = document.querySelector('.img-upload__submit');
-const inputHashtags = form.querySelector('.text__hashtags');
-const inputDescription = form.querySelector('.text__description');
+const formNode = document.querySelector('.img-upload__form');
+const submitButtonNode = document.querySelector('.img-upload__submit');
+const inputHashtagsNode = formNode.querySelector('.text__hashtags');
+const inputDescriptionNode = formNode.querySelector('.text__description');
 
 const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png', 'webp'];
 
 
 // Validation
-const pristine = new Pristine(form, {
+const pristine = new Pristine(formNode, {
   classTo: 'img-upload__element',
   errorTextParent: 'img-upload__element',
   errorTextClass: 'img-upload__error',
@@ -42,7 +42,7 @@ const validateTags = (value) => {
 };
 
 pristine.addValidator(
-  inputHashtags,
+  inputHashtagsNode,
   validateTags,
   'Неправильно заполнены хэштеги'
 );
@@ -61,7 +61,7 @@ const closeUploadModal = () => {
   uploadModal.classList.add('hidden');
   document.body.classList.remove('modal-open');
 
-  form.reset();
+  formNode.reset();
   pristine.reset();
   document.removeEventListener('keydown', onPopupEscKeydown);
 };
@@ -73,34 +73,34 @@ function onPopupEscKeydown(evt) {
   }
 }
 
-buttonCloseUploadModal.addEventListener('click', () => {
+buttonCloseUploadModalNode.addEventListener('click', () => {
   closeUploadModal();
 });
 
-buttonCloseUploadModal.addEventListener('keydown', (evt) => {
+buttonCloseUploadModalNode.addEventListener('keydown', (evt) => {
   if (isEnterKey(evt)) {
     closeUploadModal();
   }
 });
 
-uploadInput.addEventListener('change', () => {
-  const file = uploadInput.files[0];
+uploadInputNode.addEventListener('change', () => {
+  const file = uploadInputNode.files[0];
   const fileName = file.name.toLowerCase();
 
   const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
 
   if (matches) {
-    picture.src = URL.createObjectURL(file);
+    pictureNode.src = URL.createObjectURL(file);
     showUploadModal();
   } else {
     showAlert('Выберите подходящюю картинку');
   }
 });
 
-inputHashtags.addEventListener('keydown', (evt) => {
+inputHashtagsNode.addEventListener('keydown', (evt) => {
   evt.stopPropagation();
 });
-inputDescription.addEventListener('keydown', (evt) => {
+inputDescriptionNode.addEventListener('keydown', (evt) => {
   evt.stopPropagation();
 });
 
@@ -180,17 +180,17 @@ function onLoadErrorEscKeydown(evt) {
 }
 
 const blockSubmitButton = () => {
-  submitButton.disabled = true;
-  submitButton.textContent = 'Публикую...';
+  submitButtonNode.disabled = true;
+  submitButtonNode.textContent = 'Публикую...';
 };
 
 const unblockSubmitButton = () => {
-  submitButton.disabled = false;
-  submitButton.textContent = 'Опубликовать';
+  submitButtonNode.disabled = false;
+  submitButtonNode.textContent = 'Опубликовать';
 };
 
 const setPictureFormSubmit = () => {
-  form.addEventListener('submit', (evt) => {
+  formNode.addEventListener('submit', (evt) => {
     evt.preventDefault();
 
     const isValid = pristine.validate();

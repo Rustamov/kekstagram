@@ -26,4 +26,4 @@ getData(
 );
 
 
-setPictureFormSubmit(() => {});
+setPictureFormSubmit();

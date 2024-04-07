@@ -106,7 +106,7 @@ const setPicturePreviewClick = (cb) => {
     if (!pictureEL) {
       return;
     }
-
+    evt.preventDefault();
     cb(pictureEL.getAttribute('id'));
   });
 

@@ -13,7 +13,7 @@ const submitButton = document.querySelector('.img-upload__submit');
 const inputHashtags = form.querySelector('.text__hashtags');
 const inputDescription = form.querySelector('.text__description');
 
-const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png', 'webp'];
 
 
 // Validation
@@ -84,7 +84,6 @@ buttonCloseUploadModal.addEventListener('keydown', (evt) => {
 });
 
 uploadInput.addEventListener('change', () => {
-
   const file = uploadInput.files[0];
   const fileName = file.name.toLowerCase();
 
@@ -190,7 +189,7 @@ const unblockSubmitButton = () => {
   submitButton.textContent = 'Опубликовать';
 };
 
-const setPictureFormSubmit = (onSuccess) => {
+const setPictureFormSubmit = () => {
   form.addEventListener('submit', (evt) => {
     evt.preventDefault();
 
@@ -199,7 +198,6 @@ const setPictureFormSubmit = (onSuccess) => {
       blockSubmitButton();
       sendData(
         () => {
-          onSuccess();
           showLoadSuccessMsg();
           unblockSubmitButton();
           closeUploadModal();

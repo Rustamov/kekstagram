@@ -1,12 +1,31 @@
 const ALERT_SHOW_TIME = 5000;
 
-const getRandomPositiveInteger = (a, b) => {
-  const lower = Math.ceil(Math.min(Math.abs(a), Math.abs(b)));
-  const upper = Math.floor(Math.max(Math.abs(a), Math.abs(b)));
+const getRandomPositiveInteger = (min, max) => {
+  const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
+  const upper = Math.floor(Math.max(Math.abs(min), Math.abs(max)));
 
   const result = Math.random() * (upper - lower + 1) + lower;
 
   return Math.floor(result);
+};
+
+const getRandomElementsFromArray = (array, count) => {
+  const arrayCopy = array.slice();
+  const randomElements = [];
+
+  count = array.length > count
+    ? count
+    : array.length;
+
+  for (let i = 0; i < count; i++) {
+
+    const randomIndex = getRandomPositiveInteger(0, arrayCopy.length - 1);
+
+    randomElements.push(arrayCopy[randomIndex]);
+    arrayCopy.splice(randomIndex, 1);
+  }
+
+  return randomElements;
 };
 
 const checkStringLength = (string, length) =>
@@ -55,19 +74,13 @@ const throttle = (func, ms) => {
   return wrapper;
 };
 
-// function throttle(func, timeFrame) {
-//   var lastTime = 0;
-//   return function (...args) {
-//     var now = new Date();
-//     console.log();
-//     if (now - lastTime >= timeFrame) {
-//       func(...args);
-//       lastTime = now;
-//     }
-//   };
-// }
-
-
+const debounce = (callback, timeoutDelay) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
 
 const showAlert = (message) => {
   const alertContainer = document.createElement('div');
@@ -88,15 +101,17 @@ const showAlert = (message) => {
   setTimeout(() => {
     alertContainer.remove();
   }, ALERT_SHOW_TIME);
-}
+};
 
 
 export {
   getRandomPositiveInteger,
+  getRandomElementsFromArray,
   checkStringLength,
   isEscapeKey,
   isEnterKey,
   makeCounter,
   throttle,
+  debounce,
   showAlert,
 };

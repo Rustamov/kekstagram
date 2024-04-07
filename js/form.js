@@ -1,4 +1,4 @@
-import { isEscapeKey, isEnterKey } from './util.js';
+import { isEscapeKey, isEnterKey, showAlert } from './util.js';
 import { setPictureStyles } from './picture-edit.js';
 import { sendData } from './api.js';
 
@@ -11,6 +11,38 @@ const submitButton = document.querySelector('.img-upload__submit');
 const inputHashtags = form.querySelector('.text__hashtags');
 const inputDescription = form.querySelector('.text__description');
 
+// Validation
+const pristine = new Pristine(form, {
+  classTo: 'img-upload__element',
+  errorTextParent: 'img-upload__element',
+  errorTextClass: 'img-upload__error',
+});
+
+const validateTags = (value) => {
+  if (value.length === 0) {
+    return true;
+  }
+
+  const hashtagRegx = /^#[A-Za-zА-Яа-яЕё0-9]{1,19}$/;
+
+  const hashtags = value.split(' ');
+
+  if (hashtags.length > 5) {
+    return false;
+  }
+
+  return hashtags.every((hashtag) =>
+    hashtagRegx.test(hashtag)
+  );
+};
+
+pristine.addValidator(
+  inputHashtags,
+  validateTags,
+  'Неправильно заполнены хэштеги'
+);
+
+
 const showUploadModal = () => {
   setPictureStyles();
 
@@ -19,8 +51,6 @@ const showUploadModal = () => {
 
   document.addEventListener('keydown', onPopupEscKeydown);
 };
-
-showUploadModal();
 
 const closeUploadModal = () => {
   uploadModal.classList.add('hidden');
@@ -60,44 +90,6 @@ inputDescription.addEventListener('keydown', (evt) => {
 });
 
 
-// Validation
-const pristine = new Pristine(form, {
-  classTo: 'img-upload__element',
-  errorTextParent: 'img-upload__element',
-  errorTextClass: 'img-upload__error',
-});
-
-const validateTags = (value) => {
-  if (value.length === 0) {
-    return true;
-  }
-
-  const hashtagRegx = /^#[A-Za-zА-Яа-яЕё0-9]{1,19}$/;
-
-  const hashtags = value.split(' ');
-
-  if (hashtags.length > 5) {
-    return false;
-  }
-
-  return hashtags.every((hashtag) =>
-    hashtagRegx.test(hashtag)
-  );
-};
-
-pristine.addValidator(
-  inputHashtags,
-  validateTags,
-  'Неправильно заполнены хэштеги'
-);
-
-
-function onLoadSuccessEscKeydown(evt) {
-  if (isEscapeKey(evt)) {
-    closeLoadSuccessMsg();
-  }
-}
-
 const showLoadSuccessMsg = () => {
   const messageTemplateFragment = document.querySelector('#success').content;
   const messageTemplate = messageTemplateFragment.querySelector('.success');
@@ -120,21 +112,20 @@ const showLoadSuccessMsg = () => {
   document.addEventListener('keydown', onLoadSuccessEscKeydown);
 };
 
-const closeLoadSuccessMsg = () => {
+function closeLoadSuccessMsg() {
   if (document.querySelector('.success')) {
     document.querySelector('.success').remove();
     document.body.classList.remove('modal-open');
 
     document.removeEventListener('keydown', onLoadSuccessEscKeydown);
   }
-};
-
-
-function onLoadErrorEscKeydown(evt) {
+}
+function onLoadSuccessEscKeydown(evt) {
   if (isEscapeKey(evt)) {
-    closeLoadErrorMsg();
+    closeLoadSuccessMsg();
   }
 }
+
 
 const showLoadErrorMsg = () => {
   const messageTemplateFragment = document.querySelector('#error').content;
@@ -158,14 +149,20 @@ const showLoadErrorMsg = () => {
   document.addEventListener('keydown', onLoadErrorEscKeydown);
 };
 
-const closeLoadErrorMsg = () => {
+function closeLoadErrorMsg() {
   if (document.querySelector('.error')) {
     document.querySelector('.error').remove();
     document.body.classList.remove('modal-open');
 
     document.removeEventListener('keydown', onLoadErrorEscKeydown);
   }
-};
+}
+
+function onLoadErrorEscKeydown(evt) {
+  if (isEscapeKey(evt)) {
+    closeLoadErrorMsg();
+  }
+}
 
 const blockSubmitButton = () => {
   submitButton.disabled = true;

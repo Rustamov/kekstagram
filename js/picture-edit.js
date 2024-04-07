@@ -90,17 +90,16 @@ inputPictureScale.addEventListener('change', (evt) => {
 });
 
 
-
 function createSlider() {
   noUiSlider.create(sliderElement, getSliderProps());
 
   const effect = document.querySelector('.effects__list input[type="radio"]:checked').value;
   updateSlider(effect);
-};
+}
 createSlider();
 
 function getSliderProps(props) {
-  let result;
+  let result = props;
   const defProps = {
     range: {
       min: 0,
@@ -172,7 +171,7 @@ function updateSlider(effect = 'none') {
       sliderElement.noUiSlider.set(3);
       break;
   }
-};
+}
 
 const onEffectChange = (evt) => {
   const currentEffect = evt.target.value;
@@ -188,11 +187,9 @@ const onEffectChange = (evt) => {
 };
 
 
-
 document.querySelector('.effects__list').addEventListener('change', (evt) => {
   onEffectChange(evt);
 });
-
 
 
 export { setPictureStyles };

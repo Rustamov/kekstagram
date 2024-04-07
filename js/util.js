@@ -103,6 +103,20 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
+const getClickedChildWithClass = (parent, clickedEl, childElementClass) => {
+  let needEl = clickedEl;
+
+  while (needEl !== parent && needEl.tagName !== 'BODY') {
+    if (needEl.classList.contains(childElementClass)) {
+      break;
+    }
+
+    needEl = needEl.parentElement;
+  }
+
+  return needEl !== parent ? needEl : false;
+};
+
 
 export {
   getRandomPositiveInteger,
@@ -114,4 +128,5 @@ export {
   throttle,
   debounce,
   showAlert,
+  getClickedChildWithClass,
 };

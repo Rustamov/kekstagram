@@ -1,3 +1,5 @@
+import { getClickedChildWithClass } from './util.js';
+
 const filterEl = document.querySelector('.img-filters');
 const filterFormEL = filterEl.querySelector('.img-filters__form');
 const filterButtons = filterEl.querySelectorAll('.img-filters__button');
@@ -21,8 +23,8 @@ const getCurrentFilter = () => {
 const setFilterClick = (cb) => {
 
   filterFormEL.addEventListener('click', (evt) => {
-    const clickedButton = evt.target;
-    if (!clickedButton.classList.contains('img-filters__button')) {
+    const clickedButton = getClickedChildWithClass(evt.currentTarget, evt.target, 'img-filters__button');
+    if (!clickedButton) {
       return;
     }
 

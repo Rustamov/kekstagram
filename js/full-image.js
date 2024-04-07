@@ -1,4 +1,4 @@
-import { isEscapeKey } from './util.js';
+import { isEscapeKey, getClickedChildWithClass } from './util.js';
 
 const bigPicture = document.querySelector('.big-picture');
 const closeButton = bigPicture.querySelector('.big-picture__cancel');
@@ -59,12 +59,6 @@ const loadComments = () => {
   commentsListElement.append(getSocialСomments(showedComments.slice(prevShowedCommentsIndex)));
 };
 
-window.addEventListener('keydown', (evt) => {
-  if (evt.keyCode === 27) {
-    closePopup();
-  }
-});
-
 function onPopupEscKeydown(evt) {
   if (isEscapeKey(evt)) {
     closePopup();
@@ -82,7 +76,6 @@ closeButton.addEventListener('click', () => {
 
 const showFullPicture = function (picture) {
   const { url, likes, comments, description } = picture;
-  restComments = [...comments];
 
   bigPicture.classList.remove('hidden');
   document.body.classList.add('modal-open');
@@ -96,13 +89,30 @@ const showFullPicture = function (picture) {
 
   // Insert comments
   commentsListElement.innerHTML = '';
-  // commentsListElement.appendChild(getSocialСomments(showedComments));
+  showedComments.splice(0, showedComments.length);
+  restComments.splice(0, restComments.length);
+  restComments = [...comments];
 
   loadComments();
 
   document.addEventListener('keydown', onPopupEscKeydown);
 };
 
-export { showFullPicture };
+
+const setPicturePreviewClick = (cb) => {
+  document.querySelector('.pictures').addEventListener('click', (evt) => {
+    const pictureEL = getClickedChildWithClass(evt.currentTarget, evt.target, 'picture');
+
+    if (!pictureEL) {
+      return;
+    }
+
+    cb(pictureEL.getAttribute('id'));
+  });
+
+};
+
+
+export { showFullPicture, setPicturePreviewClick };
 
 

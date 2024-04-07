@@ -1,5 +1,5 @@
-import { getCurrentFilter, FILTERS } from './filter.js';
 import { getRandomElementsFromArray } from './util.js';
+import { getCurrentFilter, FILTERS } from './filter.js';
 
 const templateFragment = document.querySelector('#picture').content;
 const template = templateFragment.querySelector('a');
@@ -29,9 +29,10 @@ const renderPictures = function (picturesData) {
       break;
   }
 
-  sortedPicrures.forEach(({ url, likes, comments }) => {
+  sortedPicrures.forEach(({ id, url, likes, comments }) => {
     const pictureEl = template.cloneNode(true);
 
+    pictureEl.setAttribute('id', id);
     pictureEl.querySelector('.picture__img').setAttribute('src', url);
     pictureEl.querySelector('.picture__likes').textContent = likes;
     pictureEl.querySelector('.picture__comments').textContent = comments.length;
@@ -44,7 +45,6 @@ const renderPictures = function (picturesData) {
   });
   picturesListElement.appendChild(picturesListFragment);
 };
-
 
 export { renderPictures };
 
